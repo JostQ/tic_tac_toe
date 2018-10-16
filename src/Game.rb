@@ -103,6 +103,8 @@ class Game
     end
 
     def start_game #Au lancement d'une partie
+        puts "Bonjour, tu veux jouer aux morpions ?"
+        puts "J'espère que t'as un pote. On n'a pas codé d'IA."
         ask_name_player(@player1, @player2) #On demande leurs noms aux joueurs
         while true #Et tant que les joueurs veulent jouer
             if @restart == true
