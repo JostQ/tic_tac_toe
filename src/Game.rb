@@ -14,20 +14,23 @@ class Game
         puts "Nom joueur 1 :"
         print "> "
         player1.name = gets.chomp
-        puts "Bienvenue #{player1.name}, vous jouez les X"
+        puts "Bienvenue #{Rainbow(player1.name).bright}. Vous jouez les #{Rainbow("X").red}."
 
         puts "Nom joueur 2 :"
         print "> "
         player2.name = gets.chomp
-        puts "Bienvenue #{player2.name}, vous jouez les Y"
+        puts "Bienvenue #{Rainbow(player2.name).bright}. Vous jouez les #{Rainbow("Y").green}."
 
         if Random.new.rand(2) == 0
             player1.turn = true
-            puts "#{player1.name} commence !"
+            puts "#{Rainbow(player1.name).bright} commence !"
         else
             player2.turn = true
-            puts "#{player2.name} commence !"
+            puts "#{Rainbow(player2.name).bright} commence !"
         end
+        print "Pour commencer, appuyez sur Entrée."
+        gets.chomp
+        system("clear")
     end
 
     def win?(player)
@@ -61,7 +64,7 @@ class Game
     end
 
     def turn(player_turn_on, player_turn_off)
-        puts "#{player_turn_on.name} - Choisis un chiffre entre 1 et 9 : "
+        puts "#{Rainbow(player_turn_on.name).bright} - Choisis un chiffre entre 1 et 9 : "
         while true
             print "> "
             player_choice = gets.chomp
@@ -81,11 +84,13 @@ class Game
         player_turn_off.turn = true
         @board.tab_board[player_choice].symbol = player_turn_on.symbol
         win?(player_turn_on)
+        system("clear")
     end
 
     def start_game
         ask_name_player(@player1, @player2)
         while @player1.won != true && @player2.won != true && @nul != true
+            puts " #{Rainbow(@player1.name).red} vs #{Rainbow(@player2.name).green}"
             @board.display_board
             if @player1.turn == true
                 turn(@player1, @player2)
@@ -93,11 +98,12 @@ class Game
                 turn(@player2, @player1)
             end
         end
+        puts " #{Rainbow(@player1.name).red} vs #{Rainbow(@player2.name).green}"
         @board.display_board
         if @player1.won == true
-            puts "GG #{@player1.name} !"
+            puts "GG #{Rainbow(@player1.name).bright} !"
         elsif @player2.won == true
-            puts "GG #{@player2.name} !"
+            puts "GG #{Rainbow(@player2.name).bright} !"
         elsif @nul == true
             puts "Match nul !"
         end
