@@ -61,15 +61,20 @@ class Game
     end
 
     def turn(player_turn_on, player_turn_off)
-        puts "#{player_turn_on.name} - Choisis un nombre entre 1 et 9 : "
+        puts "#{player_turn_on.name} - Choisis un chiffre entre 1 et 9 : "
         while true
             print "> "
-            player_choice = gets.chomp.to_i
-            player_choice -= 1
-            if @board.tab_board[player_choice].symbol != " "
-                puts "Choisis une case vide :"
+            player_choice = gets.chomp
+            if !/^[1-9]{1}$/.match(player_choice)
+                puts "Choisis un véritable chiffre, pas une lettre, un chiffre, UN SEUL !"
             else
-                break
+                player_choice = player_choice.to_i
+                player_choice -= 1
+                if @board.tab_board[player_choice].symbol != " "
+                    puts "Choisis une case vide :"
+                else
+                    break
+                end
             end
         end
         player_turn_on.turn = false
