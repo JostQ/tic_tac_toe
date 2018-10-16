@@ -33,12 +33,12 @@ class Game
         end
     end
 
-#La fonction qui suit gère la victoire. 
+#La fonction qui suit gère la victoire.
 #On lui donne un joueur et elle vérifie si il remplit les conditions de victoire du morpion classique.
 # (3 cases sur une ligne, une colonne ou une diagonale)
 #Pour ça, on test chaque possibilité de victoire indépendamment.
 
-    def win?(player) 
+    def win?(player)
         if @board.tab_board[0].symbol == player.symbol && @board.tab_board[1].symbol == player.symbol && @board.tab_board[2].symbol == player.symbol
             player.won = true
         elsif @board.tab_board[3].symbol == player.symbol && @board.tab_board[4].symbol == player.symbol && @board.tab_board[5].symbol == player.symbol
@@ -136,6 +136,8 @@ class Game
             if user_restart == "non" || user_restart == "n" || user_restart == "no"
                 @restart = false
                 break #On casse la boucle si les joueurs ont eu assez de fun
+            else
+                @restart = true
             end
         end
     end
