@@ -1,5 +1,9 @@
 require_relative "BoardCase.rb"
 
+#La classe Board représente notre plateau de jeu.
+#Ce plateau comporte 9 cases (BoardCase).
+#Ce plateau doit pouvoir s'afficher.
+
 class Board
     attr_reader :tab_board
 
