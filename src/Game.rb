@@ -4,10 +4,11 @@ require_relative "Board.rb"
 class Game
 
     def initialize
-        @board = Board.new
         @nul = false
+        @board = Board.new
         @player1 = Player.new("", "#{Rainbow("X").red}")
         @player2 = Player.new("", "#{Rainbow("Y").green}")
+        @restart = false
     end
 
     def ask_name_player(player1, player2)
@@ -20,17 +21,16 @@ class Game
         print "> "
         player2.name = gets.chomp
         puts "Bienvenue #{Rainbow(player2.name).bright}. Vous jouez les #{Rainbow("Y").green}."
+    end
 
+    def random_start
         if Random.new.rand(2) == 0
-            player1.turn = true
-            puts "#{Rainbow(player1.name).bright} commence !"
+            @player1.turn = true
+            puts "#{Rainbow(@player1.name).bright} commence !"
         else
-            player2.turn = true
-            puts "#{Rainbow(player2.name).bright} commence !"
+            @player2.turn = true
+            puts "#{Rainbow(@player2.name).bright} commence !"
         end
-        print "Pour commencer, appuyez sur Entrée."
-        gets.chomp
-        system("clear")
     end
 
     def win?(player)
@@ -87,25 +87,51 @@ class Game
         system("clear")
     end
 
+    def restart_game
+        @player1.turn = false
+        @player2.turn = false
+        @player1.won = false
+        @player2.won = false
+        @board.tab_board.each do |boardcase|
+            boardcase.symbol = " "
+        end
+    end
+
     def start_game
         ask_name_player(@player1, @player2)
-        while @player1.won != true && @player2.won != true && @nul != true
+        while true
+            if restart == true
+                restart_game
+            end
+            random_start
+            print "Pour commencer, appuyez sur Entrée."
+            gets.chomp
+            system("clear")
+            while @player1.won != true && @player2.won != true && @nul != true
+                puts " #{Rainbow(@player1.name).red} vs #{Rainbow(@player2.name).green}"
+                @board.display_board
+                if @player1.turn == true
+                    turn(@player1, @player2)
+                elsif @player2.turn == true
+                    turn(@player2, @player1)
+                end
+            end
             puts " #{Rainbow(@player1.name).red} vs #{Rainbow(@player2.name).green}"
             @board.display_board
-            if @player1.turn == true
-                turn(@player1, @player2)
-            elsif @player2.turn == true
-                turn(@player2, @player1)
+            if @player1.won == true
+                puts "GG #{Rainbow(@player1.name).bright} !"
+            elsif @player2.won == true
+                puts "GG #{Rainbow(@player2.name).bright} !"
+            elsif @nul == true
+                puts "Match nul !"
             end
-        end
-        puts " #{Rainbow(@player1.name).red} vs #{Rainbow(@player2.name).green}"
-        @board.display_board
-        if @player1.won == true
-            puts "GG #{Rainbow(@player1.name).bright} !"
-        elsif @player2.won == true
-            puts "GG #{Rainbow(@player2.name).bright} !"
-        elsif @nul == true
-            puts "Match nul !"
+            puts "Voulez-vous rejouer ? (o / n)"
+            print "> "
+            user_restart = gets.chomp.downcase
+            if user_restart == "non" || user_restart == "n" || user_restart == "no"
+                @restart = false
+                break
+            end
         end
     end
 
