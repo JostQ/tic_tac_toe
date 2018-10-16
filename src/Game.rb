@@ -6,8 +6,8 @@ class Game
     def initialize
         @board = Board.new
         @nul = false
-        @player1 = Player.new("", "X")
-        @player2 = Player.new("", "Y")
+        @player1 = Player.new("", "#{Rainbow("X").red}")
+        @player2 = Player.new("", "#{Rainbow("Y").green}")
     end
 
     def ask_name_player(player1, player2)
